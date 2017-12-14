@@ -1,0 +1,72 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "OFu4xJEIjiI8Suu+j/gabfp+y6Q=",
+			"origin": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
+			"path": "github.com/davecgh/go-spew/spew",
+			"revision": "890a5c3458b43e6104ff5da8dfa139d013d77544",
+			"revisionTime": "2017-07-05T02:17:15Z"
+		},
+		{
+			"checksumSHA1": "L3leymg2RT8hFl5uL+5KP/LpBkg=",
+			"origin": "github.com/palantir/pkg/vendor/github.com/mitchellh/go-wordwrap",
+			"path": "github.com/mitchellh/go-wordwrap",
+			"revision": "91dcfbfa2f9ec3e7278e1ad55c91fec64b3c6651",
+			"revisionTime": "2017-09-07T20:42:57Z"
+		},
+		{
+			"checksumSHA1": "ljBDT76JXjWx77qKq24Ck2N+nfU=",
+			"path": "github.com/palantir/pkg/cli",
+			"revision": "91dcfbfa2f9ec3e7278e1ad55c91fec64b3c6651",
+			"revisionTime": "2017-09-07T20:42:57Z"
+		},
+		{
+			"checksumSHA1": "FXX9tuBZLSGdfkppgIZn/LZsnmQ=",
+			"path": "github.com/palantir/pkg/cli/completion",
+			"revision": "91dcfbfa2f9ec3e7278e1ad55c91fec64b3c6651",
+			"revisionTime": "2017-09-07T20:42:57Z"
+		},
+		{
+			"checksumSHA1": "Ztrd2ZLqj5WeBlGBE5BrOJ+h8Ro=",
+			"path": "github.com/palantir/pkg/cli/flag",
+			"revision": "91dcfbfa2f9ec3e7278e1ad55c91fec64b3c6651",
+			"revisionTime": "2017-09-07T20:42:57Z"
+		},
+		{
+			"checksumSHA1": "zKKp5SZ3d3ycKe4EKMNT0BqAWBw=",
+			"origin": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
+			"path": "github.com/pmezard/go-difflib/difflib",
+			"revision": "890a5c3458b43e6104ff5da8dfa139d013d77544",
+			"revisionTime": "2017-07-05T02:17:15Z"
+		},
+		{
+			"checksumSHA1": "mGbTYZ8dHVTiPTTJu3ktp+84pPI=",
+			"path": "github.com/stretchr/testify/assert",
+			"revision": "890a5c3458b43e6104ff5da8dfa139d013d77544",
+			"revisionTime": "2017-07-05T02:17:15Z"
+		},
+		{
+			"checksumSHA1": "7vs6dSc1PPGBKyzb/SCIyeMJPLQ=",
+			"path": "github.com/stretchr/testify/require",
+			"revision": "890a5c3458b43e6104ff5da8dfa139d013d77544",
+			"revisionTime": "2017-07-05T02:17:15Z"
+		},
+		{
+			"checksumSHA1": "ZaU56svwLgiJD0y8JOB3+/mpYBA=",
+			"origin": "github.com/palantir/pkg/vendor/golang.org/x/crypto/ssh/terminal",
+			"path": "golang.org/x/crypto/ssh/terminal",
+			"revision": "91dcfbfa2f9ec3e7278e1ad55c91fec64b3c6651",
+			"revisionTime": "2017-09-07T20:42:57Z"
+		},
+		{
+			"checksumSHA1": "tS9B7JRfbkBNQHl0i0AGj+r1ruk=",
+			"origin": "github.com/palantir/pkg/vendor/golang.org/x/sys/unix",
+			"path": "golang.org/x/sys/unix",
+			"revision": "91dcfbfa2f9ec3e7278e1ad55c91fec64b3c6651",
+			"revisionTime": "2017-09-07T20:42:57Z"
+		}
+	],
+	"rootPath": "github.com/joshdk/cci-trigger"
+}
