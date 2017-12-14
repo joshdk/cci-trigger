@@ -12,6 +12,12 @@ import (
 	"github.com/palantir/pkg/cli/flag"
 )
 
+const (
+	CircleTokenEnvVar = "CIRCLE_TOKEN"
+	CircleHostEnvVar  = "CIRCLE_HOST"
+	CirclePublicHost  = "circleci.com"
+)
+
 var (
 	projectParam = flag.StringParam{
 		Name: "project",
@@ -62,15 +68,31 @@ func Cmd() *cli.App {
 	app.Action = func(ctx cli.Context) error {
 
 		var (
+			token   string
+			host    string
 			project = ctx.String(projectParam.Name)
-			build   = ctx.String(buildFlag.Name)
-			ssh     = ctx.Bool(sshFlag.Name)
-			tag     = ctx.String(tagFlag.Name)
 			branch  = ctx.String(branchFlag.Name)
 			ref     = ctx.String(refFlag.Name)
+			tag     = ctx.String(tagFlag.Name)
+			build   = ctx.String(buildFlag.Name)
+			ssh     = ctx.Bool(sshFlag.Name)
 			params  = ctx.Slice(buildParams.Name)
 		)
 
+		// The CIRCLE_TOKEN environment variable is required for operation
+		token, found := os.LookupEnv(CircleTokenEnvVar)
+		if !found {
+			return fmt.Errorf("no %s in working environment", CircleTokenEnvVar)
+		}
+
+		// The CIRCLE_HOST environment variable is optional, and overrides the default
+		host, found = os.LookupEnv(CircleHostEnvVar)
+		if !found {
+			host = CirclePublicHost
+		}
+
+		fmt.Printf("host:    %q\n", host)
+		fmt.Printf("token:   %q\n", token)
 		fmt.Printf("project: %q\n", project)
 		fmt.Printf("build:   %q\n", build)
 		fmt.Printf("ssh:     %t\n", ssh)
