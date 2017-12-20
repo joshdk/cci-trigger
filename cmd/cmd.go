@@ -91,6 +91,11 @@ func Cmd() *cli.App {
 			host = CirclePublicHost
 		}
 
+		buildParams, err := splitParams(params)
+		if err != nil {
+			return err
+		}
+
 		fmt.Printf("host:    %q\n", host)
 		fmt.Printf("token:   %q\n", token)
 		fmt.Printf("project: %q\n", project)
@@ -99,7 +104,7 @@ func Cmd() *cli.App {
 		fmt.Printf("tag:     %q\n", tag)
 		fmt.Printf("branch:  %q\n", branch)
 		fmt.Printf("ref:     %q\n", ref)
-		fmt.Printf("params:  %v\n", params)
+		fmt.Printf("params:  %v\n", buildParams)
 
 		return nil
 	}
