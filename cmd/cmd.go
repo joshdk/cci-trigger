@@ -91,20 +91,27 @@ func Cmd() *cli.App {
 			host = CirclePublicHost
 		}
 
+		projectVCS, projectUsername, ProjectName, err := splitProject(project)
+		if err != nil {
+			return err
+		}
+
 		buildParams, err := splitParams(params)
 		if err != nil {
 			return err
 		}
 
-		fmt.Printf("host:    %q\n", host)
-		fmt.Printf("token:   %q\n", token)
-		fmt.Printf("project: %q\n", project)
-		fmt.Printf("build:   %q\n", build)
-		fmt.Printf("ssh:     %t\n", ssh)
-		fmt.Printf("tag:     %q\n", tag)
-		fmt.Printf("branch:  %q\n", branch)
-		fmt.Printf("ref:     %q\n", ref)
-		fmt.Printf("params:  %v\n", buildParams)
+		fmt.Printf("host:     %q\n", host)
+		fmt.Printf("token:    %q\n", token)
+		fmt.Printf("vcs:      %q\n", projectVCS)
+		fmt.Printf("username: %q\n", projectUsername)
+		fmt.Printf("project:  %q\n", ProjectName)
+		fmt.Printf("build:    %q\n", build)
+		fmt.Printf("ssh:      %t\n", ssh)
+		fmt.Printf("tag:      %q\n", tag)
+		fmt.Printf("branch:   %q\n", branch)
+		fmt.Printf("ref:      %q\n", ref)
+		fmt.Printf("params:   %v\n", buildParams)
 
 		return nil
 	}
