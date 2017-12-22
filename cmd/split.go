@@ -43,3 +43,25 @@ func splitParams(args []string) (map[string]string, error) {
 
 	return params, nil
 }
+
+func splitProject(name string) (string, string, string, error) {
+	chunks := strings.SplitN(name, "/", 3)
+
+	switch len(chunks) {
+	case 3:
+		switch chunks[0] {
+		case "gh":
+			fallthrough
+		case "github":
+			return "github", chunks[1], chunks[2], nil
+		case "bb":
+			fallthrough
+		case "bitbucket":
+			return "bitbucket", chunks[1], chunks[2], nil
+		}
+	case 2:
+		return "github", chunks[0], chunks[1], nil
+	}
+
+	return "", "", "", fmt.Errorf("invalid project name %q", name)
+}
