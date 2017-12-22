@@ -154,3 +154,95 @@ func TestSplitParams(t *testing.T) {
 		})
 	}
 }
+
+func TestSplitProject(t *testing.T) {
+
+	tests := []struct {
+		title    string
+		arg      string
+		vcs      string
+		username string
+		project  string
+		err      string
+	}{
+		{
+			title: "empty",
+			err:   `invalid project name ""`,
+		},
+		{
+			title: "single field",
+			arg:   "example",
+			err:   `invalid project name "example"`,
+		},
+		{
+			title:    "two fields",
+			arg:      "alice/example",
+			vcs:      "github",
+			username: "alice",
+			project:  "example",
+		},
+		{
+			title:    "short github vcs",
+			arg:      "gh/alice/example",
+			vcs:      "github",
+			username: "alice",
+			project:  "example",
+		},
+		{
+			title:    "long github vcs",
+			arg:      "github/alice/example",
+			vcs:      "github",
+			username: "alice",
+			project:  "example",
+		},
+		{
+			title:    "short bitbucket vcs",
+			arg:      "bb/bob/example",
+			vcs:      "bitbucket",
+			username: "bob",
+			project:  "example",
+		},
+		{
+			title:    "long bitbucket vcs",
+			arg:      "bitbucket/bob/example",
+			vcs:      "bitbucket",
+			username: "bob",
+			project:  "example",
+		},
+		{
+			title: "unknown vcs",
+			arg:   "svn/carol/example",
+			err:   `invalid project name "svn/carol/example"`,
+		},
+		{
+			title:    "many slashes",
+			arg:      "github/carol/example/a/b/c",
+			vcs:      "github",
+			username: "carol",
+			project:  "example/a/b/c",
+		},
+		{
+			title:    "other characters",
+			arg:      "dave-user/example_repo",
+			vcs:      "github",
+			username: "dave-user",
+			project:  "example_repo",
+		},
+	}
+
+	for index, test := range tests {
+		name := fmt.Sprintf("Case #%d - %s", index, test.title)
+
+		t.Run(name, func(t *testing.T) {
+			vcs, username, project, err := splitProject(test.arg)
+
+			if test.err != "" {
+				require.EqualError(t, err, test.err)
+			}
+
+			require.Equal(t, test.vcs, vcs)
+			require.Equal(t, test.username, username)
+			require.Equal(t, test.project, project)
+		})
+	}
+}
