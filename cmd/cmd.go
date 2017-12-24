@@ -101,6 +101,15 @@ func Cmd() *cli.App {
 			return err
 		}
 
+		// Get the specific action type, if possible
+		action, err := getAction(build, ssh, tag, branch, ref, buildParams)
+		if err != nil {
+			return err
+		}
+
+		// Get a readable description for the action
+		desc := getHandler(action, build, ssh, tag, branch, ref, buildParams)
+
 		fmt.Printf("host:     %q\n", host)
 		fmt.Printf("token:    %q\n", token)
 		fmt.Printf("vcs:      %q\n", projectVCS)
@@ -112,6 +121,7 @@ func Cmd() *cli.App {
 		fmt.Printf("branch:   %q\n", branch)
 		fmt.Printf("ref:      %q\n", ref)
 		fmt.Printf("params:   %v\n", buildParams)
+		fmt.Printf("action:   %v\n", desc)
 
 		return nil
 	}
