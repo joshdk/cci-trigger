@@ -10,6 +10,8 @@ import (
 
 	"github.com/palantir/pkg/cli"
 	"github.com/palantir/pkg/cli/flag"
+
+	"github.com/joshdk/cci-trigger/cci"
 )
 
 const (
@@ -108,7 +110,10 @@ func Cmd() *cli.App {
 		}
 
 		// Get a readable description for the action
-		desc := getHandler(action, build, ssh, tag, branch, ref, buildParams)
+		desc, handler := getHandler(action, build, ssh, tag, branch, ref, buildParams)
+		if handler == nil {
+			return fmt.Errorf(desc)
+		}
 
 		fmt.Printf("host:     %q\n", host)
 		fmt.Printf("token:    %q\n", token)
@@ -122,6 +127,15 @@ func Cmd() *cli.App {
 		fmt.Printf("ref:      %q\n", ref)
 		fmt.Printf("params:   %v\n", buildParams)
 		fmt.Printf("action:   %v\n", desc)
+
+		client := cci.NewWithHost(token, host)
+
+		resp, err := handler(client, projectVCS, projectUsername, ProjectName)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(resp.BuildURL)
 
 		return nil
 	}
