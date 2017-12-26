@@ -7,9 +7,13 @@ package cmd
 import (
 	"errors"
 	"fmt"
+
+	"github.com/joshdk/cci-trigger/cci"
 )
 
 type action uint
+
+type handler func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error)
 
 const (
 	unknown action = iota
@@ -80,23 +84,44 @@ func getAction(build string, ssh bool, tag string, branch string, ref string, pa
 	}
 }
 
-func getHandler(action action, build string, ssh bool, tag string, branch string, ref string, params map[string]string) string {
+func getHandler(action action, build string, ssh bool, tag string, branch string, ref string, params map[string]string) (string, handler) {
 	switch action {
 	case buildDefault:
-		return "build default branch"
+		return "build default branch",
+			func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error) {
+				return client.BuildDefault(vcs, username, project, params)
+			}
 	case buildBranch:
-		return fmt.Sprintf("build branch %s", branch)
+		return fmt.Sprintf("build branch %s", branch),
+			func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error) {
+				return client.BuildBranch(vcs, username, project, branch, params)
+			}
 	case buildBranchAtRef:
-		return fmt.Sprintf("build branch %s at %s", branch, ref)
+		return fmt.Sprintf("build branch %s at %s", branch, ref),
+			func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error) {
+				return client.BuildBranchAtRef(vcs, username, project, branch, ref, params)
+			}
 	case buildRef:
-		return fmt.Sprintf("build ref %s", ref)
+		return fmt.Sprintf("build ref %s", ref),
+			func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error) {
+				return client.BuildRef(vcs, username, project, ref, params)
+			}
 	case buildTag:
-		return fmt.Sprintf("build tag %s", tag)
+		return fmt.Sprintf("build tag %s", tag),
+			func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error) {
+				return client.BuildTag(vcs, username, project, tag, params)
+			}
 	case rebuild:
-		return fmt.Sprintf("rebuild #%s", build)
+		return fmt.Sprintf("rebuild #%s", build),
+			func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error) {
+				return client.Rebuild(vcs, username, project, build)
+			}
 	case rebuildWithSSH:
-		return fmt.Sprintf("rebuild #%s with SSH", build)
+		return fmt.Sprintf("rebuild #%s with SSH", build),
+			func(client cci.Client, vcs string, username string, project string) (*cci.BuildResponse, error) {
+				return client.RebuildWithSSH(vcs, username, project, build)
+			}
 	default:
-		return "invalid flag combination"
+		return "invalid flag combination", nil
 	}
 }
