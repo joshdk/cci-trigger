@@ -51,6 +51,7 @@ func Cmd() *cli.App {
 
 	app.Name = "cci-trigger"
 	app.Description = "Trigger CircleCI builds programmatically"
+	app.Version = Version()
 
 	app.Flags = []flag.Flag{
 		projectParam,
