@@ -3,6 +3,7 @@ products:
     build:
       output-dir: ./build/bin
       main-pkg: .
+      version-var: github.com/joshdk/cci-trigger/cmd.version
       os-archs:
         - os: darwin
           arch: amd64
