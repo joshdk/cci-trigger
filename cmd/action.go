@@ -28,7 +28,14 @@ const (
 
 // getAction converts the given flags into the correct action to take, if possible.
 func getAction(build string, ssh bool, tag string, branch string, ref string, params map[string]string) (action, error) {
-	type flagSet [6]bool
+	type flagSet struct {
+		hasBranch bool
+		hasRef    bool
+		hasTag    bool
+		hasBuild  bool
+		hasSSH    bool
+		hasParams bool
+	}
 
 	has := flagSet{
 		branch != "",
@@ -42,41 +49,41 @@ func getAction(build string, ssh bool, tag string, branch string, ref string, pa
 	switch has {
 
 	// cci-trigger <project> [params...]
-	case flagSet{false, false, false, false, false, false}:
+	case flagSet{}:
 		fallthrough
-	case flagSet{false, false, false, false, false, true}:
+	case flagSet{hasParams: true}:
 		return buildDefault, nil
 
 	// cci-trigger <project> --branch X [params...]
-	case flagSet{true, false, false, false, false, false}:
+	case flagSet{hasBranch: true}:
 		fallthrough
-	case flagSet{true, false, false, false, false, true}:
+	case flagSet{hasBranch: true, hasParams: true}:
 		return buildBranch, nil
 
 	// cci-trigger <project> --branch X --ref X [params...]
-	case flagSet{true, true, false, false, false, false}:
+	case flagSet{hasBranch: true, hasRef: true}:
 		fallthrough
-	case flagSet{true, true, false, false, false, true}:
+	case flagSet{hasBranch: true, hasRef: true, hasParams: true}:
 		return buildBranchAtRef, nil
 
 	// cci-trigger <project> --ref X [params...]
-	case flagSet{false, true, false, false, false, false}:
+	case flagSet{hasRef: true}:
 		fallthrough
-	case flagSet{false, true, false, false, false, true}:
+	case flagSet{hasRef: true, hasParams: true}:
 		return buildRef, nil
 
 	// cci-trigger <project> --tag X [params...]
-	case flagSet{false, false, true, false, false, false}:
+	case flagSet{hasTag: true}:
 		fallthrough
-	case flagSet{false, false, true, false, false, true}:
+	case flagSet{hasTag: true, hasParams: true}:
 		return buildTag, nil
 
 	// cci-trigger <project> --build X
-	case flagSet{false, false, false, true, false, false}:
+	case flagSet{hasBuild: true}:
 		return rebuild, nil
 
 	// cci-trigger <project> --build X --ssh
-	case flagSet{false, false, false, true, true, false}:
+	case flagSet{hasBuild: true, hasSSH: true}:
 		return rebuildWithSSH, nil
 
 	default:
